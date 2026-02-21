@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="success-box">
+            <div class="checkmark">✓</div>
+            <h1>Registration Successful!</h1>
+            <p class="thank-you">Thank you for registering, <strong>{{ student.name }}</strong>!</p>
+            
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="label">👤 Name:</span>
+                    <span class="value">{{ student.name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">🎫 Enroll Number:</span>
+                    <span class="value enroll">{{ student.enroll_number }}</span>
+                </div>
+            </div>
+
+            <p class="note">📌 Please save your enroll number: <strong>{{ student.enroll_number }}</strong></p>
+
+            <div class="actions">
+                <a href="/" class="btn-submit">🏠 Back to Home</a>
+                <a href="/registered-students" class="btn-secondary">👥 View All Students</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
