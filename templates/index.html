@@ -1,146 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memes Event Registration</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            width: 800px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        input, select {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-
-        .full {
-            grid-column: span 2;
-        }
-
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: #2563eb;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-        .link {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-    </style>
+<title>Memes Event Registration</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
 <div class="container">
-    <h1>🎭 Memes Event Registration</h1>
 
-    <form action="/register" method="POST" class="form-grid">
+<img src="{{ url_for('static', filename='hillario.jpeg') }}" class="logo">
 
-        <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" name="name" required>
-        </div>
+<h2 class="bold">
+Nandha Arts and Science College (Autonomous)
+</h2>
 
-        <div class="form-group">
-            <label>Phone *</label>
-            <input type="tel" name="phone" pattern="[0-9]{10}" required>
-        </div>
+<h3 class="bold">
+Department of Information Technology
+</h3>
 
-        <div class="form-group">
-            <label>Register Number *</label>
-            <input type="text" name="register_number" required>
-        </div>
+<h1 class="event-title">
+Memes Event Registration
+</h1>
 
-        <div class="form-group">
-            <label>Department *</label>
-            <select name="department" required>
-                <option value="">Select</option>
-                <option>Computer Science</option>
-                <option>Information Technology</option>
-                <option>Electronics</option>
-                <option>Mechanical</option>
-                <option>Civil</option>
-            </select>
-        </div>
+<form method="POST" action="/register">
 
-        <div class="form-group">
-            <label>Year *</label>
-            <select name="year" required>
-                <option value="">Select</option>
-                <option>I</option>
-                <option>II</option>
-                <option>III</option>
-                <option>IV</option>
-            </select>
-        </div>
+<label>Full Name *</label>
+<input type="text" name="name" required>
 
-        <div class="form-group">
-            <label>College *</label>
-            <input type="text" name="college" required>
-        </div>
+<label>Phone *</label>
+<input type="tel" name="phone" pattern="[0-9]{10}" required>
 
-        <div class="form-group full">
-            <label>Registration Date *</label>
-            <input type="date" name="reg_date" required>
-        </div>
+<label>Register Number *</label>
+<input type="text" name="register_number" required>
 
-        <div class="form-group full">
-            <button type="submit">Register</button>
-        </div>
+<label>Department *</label>
+<input type="text" name="department" required>
 
-    </form>
+<label>Year *</label>
+<select name="year" required>
+<option>I</option>
+<option>II</option>
+<option>III</option>
+<option>IV</option>
+</select>
 
-    <div class="link">
-        <a href="/registered-students">View Registered Students</a>
-    </div>
+<label>College *</label>
+<input type="text" name="college"
+value="Nandha Arts and Science College (Autonomous)" required>
+
+<label>Event Date *</label>
+<input type="date" name="event_date" required>
+
+<button class="btn">Register</button>
+
+</form>
+
+<a href="/registered-students" class="link">View Registered Students</a>
 
 </div>
 

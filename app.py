@@ -1,68 +1,65 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from datetime import datetime
+import pandas as pd
+import io
 
 app = Flask(__name__)
 
-registered_students = []
-enroll_counter = 1
+students = []
+counter = 1
+
+
+def generate_enroll():
+    global counter
+    eid = f"26HME{counter:03d}"
+    counter += 1
+    return eid
 
 
 @app.route('/')
-def index():
+def home():
     return render_template("index.html")
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=["POST"])
 def register():
-    global enroll_counter
-
-    name = request.form.get("name")
-    phone = request.form.get("phone")
-    register_number = request.form.get("register_number")
-    department = request.form.get("department")
-    year = request.form.get("year")
-    college = request.form.get("college")
-    reg_date = request.form.get("reg_date")   # ✅ selected from calendar
-
-    # ✅ duplicate check
-    for s in registered_students:
-        if s["register_number"] == register_number:
-            return "Student already registered!"
-
-    # ✅ year code from selected date
-    year_code = reg_date[2:4]   # YYYY-MM-DD → YY
-
-    # ✅ enroll number format
-    enroll_number = f"{year_code}HME{enroll_counter:03}"
-
-    # ✅ auto system time
-    auto_time = datetime.now().strftime("%H:%M:%S")
+    enroll = generate_enroll()
+    now = datetime.now()
 
     student = {
-        "enroll_number": enroll_number,
-        "name": name,
-        "register_number": register_number,
-        "department": department,
-        "year": year,
-        "college": college,
-        "phone": phone,
-        "date": reg_date,     # from calendar
-        "time": auto_time     # automatic
+        "enroll": enroll,
+        "name": request.form["name"],
+        "phone": request.form["phone"],
+        "regno": request.form["register_number"],
+        "dept": request.form["department"],
+        "year": request.form["year"],
+        "college": request.form["college"],
+        "date": request.form["event_date"],
+        "time": now.strftime("%H:%M:%S")
     }
 
-    registered_students.append(student)
-    enroll_counter += 1
+    students.append(student)
 
-    return render_template("success.html", student=student)
+    return render_template("success.html",
+                           name=student["name"],
+                           enroll=enroll)
 
 
 @app.route('/registered-students')
-def view_students():
-    return render_template(
-        "registered_students.html",
-        students=registered_students,
-        total=len(registered_students)
-    )
+def registered():
+    return render_template("registered_students.html", students=students)
+
+
+@app.route('/download')
+def download():
+    df = pd.DataFrame(students)
+    output = io.BytesIO()
+    df.to_excel(output, index=False)
+    output.seek(0)
+
+    return send_file(output,
+                     download_name="registered_students.xlsx",
+                     as_attachment=True)
 
 
 if __name__ == "__main__":

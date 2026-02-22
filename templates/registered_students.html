@@ -1,60 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registered Students</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>👥 Registered Students</h1>
-            <div class="total-badge">Total Registrations: <span>{{ total }}</span></div>
-        </div>
 
-        {% if students %}
-        <div class="table-wrapper">
-            <table class="students-table">
-                <thead>
-                    <tr>
-                        <th>Enroll Number</th>
-                        <th>Name</th>
-                        <th>Register No.</th>
-                        <th>Department</th>
-                        <th>Year</th>
-                        <th>College</th>
-                        <th>Phone</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for student in students %}
-                    <tr>
-                        <td><span class="enroll-badge">{{ student.enroll_number }}</span></td>
-                        <td><strong>{{ student.name }}</strong></td>
-                        <td>{{ student.register_number }}</td>
-                        <td>{{ student.department }}</td>
-                        <td>{{ student.year }}</td>
-                        <td>{{ student.college }}</td>
-                        <td>{{ student.phone }}</td>
-                        <td>{{ student.date }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <p>📭 No registrations yet. Be the first!</p>
-            <a href="/" class="btn-submit">Register Now</a>
-        </div>
-        {% endif %}
+<div class="card">
 
-        <div class="nav-link">
-            <a href="/">← Back to Registration</a>
-        </div>
-    </div>
+<h2>Registered Students</h2>
+
+<a href="/download" class="btn small">Download Excel</a>
+
+<table>
+<tr>
+<th>Enroll</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Register No</th>
+<th>Dept</th>
+<th>Year</th>
+<th>College</th>
+<th>Date</th>
+<th>Time</th>
+</tr>
+
+{% for s in students %}
+<tr>
+<td>{{ s.enroll }}</td>
+<td>{{ s.name }}</td>
+<td>{{ s.phone }}</td>
+<td>{{ s.register }}</td>
+<td>{{ s.department }}</td>
+<td>{{ s.year }}</td>
+<td>{{ s.college }}</td>
+<td>{{ s.date }}</td>
+<td>{{ s.time }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<a href="/" class="btn small">Back</a>
+
+</div>
 
 </body>
 </html>
