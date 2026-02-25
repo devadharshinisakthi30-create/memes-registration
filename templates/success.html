@@ -1,20 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if meme_done %}Success!{% else %}Registered!{% endif %} — MemeFest 2026</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="container center">
+<nav class="navbar">
+    <div class="nav-brand">🎭 MemeFest 2026</div>
+    <div class="nav-links">
+        <a href="/">Register</a>
+        <a href="/registered-students">Participants</a>
+    </div>
+</nav>
 
-<h2>✅ Thank You for Registration!</h2>
+<div class="container">
+    <div class="card text-center">
 
-<h3>{{ name }}</h3>
-<p>Your Enrollment Number</p>
-<h2>{{ enroll }}</h2>
+        {% if meme_done %}
+        <div class="success-icon">🎉</div>
+        <h2 class="card-title">Registered & Meme Submitted!</h2>
+        <p class="card-sub">Well done, <strong>{{ name }}</strong>! Your registration and meme have been successfully submitted for MemeFest 2026.</p>
+        {% else %}
+        <div class="success-icon">✅</div>
+        <h2 class="card-title">You're Registered!</h2>
+        <p class="card-sub">Welcome, <strong>{{ name }}</strong>! Don't forget to upload your meme below.</p>
+        {% endif %}
 
-<a href="/" class="btn small">Back to Home</a>
+        <div class="enroll-display">
+            <span class="enroll-label">Your Enrollment ID</span>
+            <span class="enroll-id">{{ enroll }}</span>
+        </div>
 
+        {% if not meme_done %}
+        <div class="upload-cta">
+            <p>🎭 You haven't uploaded a meme yet. Upload now to complete your entry!</p>
+            <a href="/upload-meme/{{ enroll }}" class="btn btn-primary" style="font-size:1rem; padding:0.9rem 2.5rem;">
+                📤 Upload Your Meme
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="btn-row" style="margin-top:1.5rem;">
+            <a href="/" class="btn btn-outline">← Register Another</a>
+            <a href="/registered-students" class="btn btn-primary">📋 View All Participants</a>
+        </div>
+
+    </div>
 </div>
 
 </body>

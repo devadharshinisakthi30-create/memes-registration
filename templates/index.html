@@ -1,63 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Memes Event Registration</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Contest 2026 - Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="container">
+<nav class="navbar">
+    <div class="nav-brand">🎭 MemeFest 2026</div>
+    <div class="nav-links">
+        <a href="/">Register</a>
+        <a href="/registered-students">Participants</a>
+    </div>
+</nav>
 
-<img src="{{ url_for('static', filename='hillario.jpeg') }}" class="logo">
-
-<h2 class="bold">
-Nandha Arts and Science College (Autonomous)
-</h2>
-
-<h3 class="bold">
-Department of Information Technology
-</h3>
-
-<h1 class="event-title">
-Memes Event Registration
-</h1>
-
-<form method="POST" action="/register">
-
-<label>Full Name *</label>
-<input type="text" name="name" required>
-
-<label>Phone *</label>
-<input type="tel" name="phone" pattern="[0-9]{10}" required>
-
-<label>Register Number *</label>
-<input type="text" name="register_number" required>
-
-<label>Department *</label>
-<input type="text" name="department" required>
-
-<label>Year *</label>
-<select name="year" required>
-<option>I</option>
-<option>II</option>
-<option>III</option>
-<option>IV</option>
-</select>
-
-<label>College *</label>
-<input type="text" name="college"
-<input type="text" name="collegeNAME" required>
-
-<label>Event Date *</label>
-<input type="date" name="event_date" required>
-
-<button class="btn">Register</button>
-
-</form>
-
-<a href="/registered-students" class="link">View Registered Students</a>
-
+<div class="college-header">
+    <img src="{{ url_for('static', filename='hillario.jpeg') }}" alt="College Logo" class="college-logo">
+    <div class="college-name">Nandha Arts and Science College (Autonomous)</div>
+    <div class="dept-name">Department of Information Technology</div>
 </div>
+
+<div class="container">
+    <div class="card">
+        <h2 class="card-title">📋 Register for Meme Contest</h2>
+        <p class="card-sub">Fill in your details to get your Enrollment ID</p>
+
+        <form method="POST" action="/register" enctype="multipart/form-data">
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="e.g. Rahul Kumar" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="register_number">Register Number *</label>
+                    <input type="text" id="register_number" name="register_number" placeholder="e.g. 22IT001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">Department *</label>
+                    <input type="text" id="department" name="department" placeholder="e.g. Information Technology" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year of Study *</label>
+                    <select id="year" name="year" required>
+                        <option value="" disabled selected>Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="college">College Name *</label>
+                    <input type="text" id="college" name="college" placeholder="e.g. Nandha Arts and Science College" required>
+                </div>
+
+                <div class="form-group full">
+                    <label>Upload Your Meme (Image or Video) *</label>
+                    <div class="upload-section">
+                        <label for="meme_file">🎭 Click to select your meme file</label>
+                        <input type="file" id="meme_file" name="meme_file" accept="image/*,video/*" required>
+                        <p class="upload-note">Accepted: PNG, JPG, GIF, MP4, MOV, AVI, WEBM</p>
+                        <p class="upload-note" id="selectedName" style="color:#4f46e5; font-weight:600; margin-top:0.4rem;"></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">✦ Register & Submit Meme</button>
+                <span class="hint-text">Your meme will be submitted along with registration.</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('meme_file').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            document.getElementById('selectedName').textContent = '📎 Selected: ' + this.files[0].name;
+        }
+    });
+</script>
 
 </body>
 </html>

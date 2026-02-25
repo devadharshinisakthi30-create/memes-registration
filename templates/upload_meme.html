@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Meme — MemeFest 2026</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">🎭 MemeFest 2026</div>
+    <div class="nav-links">
+        <a href="/">Register</a>
+        <a href="/registered-students">Participants</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <h2 class="card-title">📤 Upload Your Meme</h2>
+        <p class="card-sub">
+            Submitting for: <strong>{{ student.name }}</strong> —
+            <span class="enroll-tag">{{ student.enroll }}</span>
+        </p>
+
+        {% if student.meme_uploaded %}
+        <div class="alert alert-success">✅ You already uploaded a meme. You can re-upload below to replace it.</div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-error">⚠ {{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/upload-meme/{{ student.enroll }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Select Image or Video</label>
+                <div class="drop-zone" id="dropZone">
+                    <input type="file" name="meme_file" id="memeFile" accept="image/*,video/*" required>
+                    <div class="drop-icon">🎭</div>
+                    <p class="drop-label">Click to browse or drag & drop</p>
+                    <p class="drop-hint">PNG · JPG · GIF · MP4 · MOV · AVI · WEBM</p>
+                </div>
+                <div class="file-selected" id="fileSelected" style="display:none;"></div>
+            </div>
+
+            <div class="form-actions" style="margin-top:1.5rem;">
+                <button type="submit" class="btn btn-primary">📤 Submit Meme</button>
+                <a href="/registered-students" class="btn btn-outline">View Participants</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('memeFile');
+    const fileSelected = document.getElementById('fileSelected');
+    const dropZone = document.getElementById('dropZone');
+
+    input.addEventListener('change', () => {
+        if (input.files.length > 0) {
+            fileSelected.textContent = '📎 Selected: ' + input.files[0].name;
+            fileSelected.style.display = 'block';
+        }
+    });
+
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+</script>
+
+</body>
+</html>

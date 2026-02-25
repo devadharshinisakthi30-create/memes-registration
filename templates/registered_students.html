@@ -1,48 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants — MemeFest 2026</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="card">
+<nav class="navbar">
+    <div class="nav-brand">🎭 MemeFest 2026</div>
+    <div class="nav-links">
+        <a href="/">Register</a>
+        <a href="/registered-students">Participants</a>
+    </div>
+</nav>
 
-<h2>Registered Students</h2>
+<div class="container wide">
 
-<a href="/download" class="btn small">Download Excel</a>
+    {% set total = students | length %}
+    {% set uploaded = students | selectattr("meme_uploaded") | list | length %}
+    {% set pending = total - uploaded %}
 
-<table>
-<tr>
-<th>Enroll</th>
-<th>Name</th>
-<th>Phone</th>
-<th>Register No</th>
-<th>Dept</th>
-<th>Year</th>
-<th>College</th>
-<th>Date</th>
-<th>Time</th>
-</tr>
+    <div class="page-header">
+        <div>
+            <h2 class="card-title" style="margin-bottom:0.2rem;">📋 Participants</h2>
+            <p class="card-sub" style="margin:0;">MemeFest 2026 — All Registered Students</p>
+        </div>
+        {% if total > 0 %}
+        <a href="/download" class="btn btn-primary">⬇ Download Excel</a>
+        {% endif %}
+    </div>
 
-{% for s in students %}
-<tr>
-<td>{{ s.enroll }}</td>
-<td>{{ s.name }}</td>
-<td>{{ s.phone }}</td>
-<td>{{ s.register }}</td>
-<td>{{ s.department }}</td>
-<td>{{ s.year }}</td>
-<td>{{ s.college }}</td>
-<td>{{ s.date }}</td>
-<td>{{ s.time }}</td>
-</tr>
-{% endfor %}
+    <div class="stats-row">
+        <div class="stat-box">
+            <div class="stat-num">{{ total }}</div>
+            <div class="stat-label">Total Registered</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num green">{{ uploaded }}</div>
+            <div class="stat-label">Memes Uploaded</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num red">{{ pending }}</div>
+            <div class="stat-label">Pending Upload</div>
+        </div>
+    </div>
 
-</table>
+    {% if students %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Enrollment ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Reg. No.</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>College</th>
+                    <th>Date & Time</th>
+                    <th>Meme Status</th>
+                    <th>View Meme</th>
+                    <th>Re-Upload</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td class="muted">{{ loop.index }}</td>
+                    <td class="enroll-cell">{{ s.enroll }}</td>
+                    <td><strong>{{ s.name }}</strong></td>
+                    <td class="muted">{{ s.email }}</td>
+                    <td class="muted">{{ s.phone }}</td>
+                    <td>{{ s.regno }}</td>
+                    <td>{{ s.dept }}</td>
+                    <td>{{ s.year }}</td>
+                    <td class="college-cell">{{ s.college }}</td>
+                    <td class="muted">{{ s.registered_on }}, {{ s.time }}</td>
+                    <td>
+                        {% if s.meme_uploaded %}
+                        <span class="badge badge-success">✓ Uploaded</span>
+                        {% else %}
+                        <span class="badge badge-pending">⏳ Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if s.meme_uploaded and s.meme_filename %}
+                            {% set ext = s.meme_filename.rsplit('.', 1)[-1].lower() %}
+                            {% if ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                            <a href="{{ url_for('static', filename='meme_uploads/' + s.meme_filename) }}" target="_blank" class="action-link">▶ Video</a>
+                            {% else %}
+                            <a href="{{ url_for('static', filename='meme_uploads/' + s.meme_filename) }}" target="_blank" class="action-link">🖼 Image</a>
+                            {% endif %}
+                        {% else %}
+                        <span class="muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/upload-meme/{{ s.enroll }}" class="action-link">
+                            {% if s.meme_uploaded %}🔁 Re-upload{% else %}📤 Upload{% endif %}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<a href="/" class="btn small">Back</a>
+    {% else %}
+    <div class="empty-state">
+        <div style="font-size:3rem; margin-bottom:1rem;">🎭</div>
+        <p>No participants yet. Be the first!</p>
+        <a href="/" class="btn btn-primary" style="margin-top:1rem;">Register Now</a>
+    </div>
+    {% endif %}
 
 </div>
-
 </body>
 </html>
